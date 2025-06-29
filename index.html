@@ -485,7 +485,7 @@
             </svg>
         </div>
         <p style="font-size: 1.3rem; color: #666; font-style: italic; margin-top: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
-            For the birthday girl to get her birthday gift, she must first solve this birthday riddle, which actually has nth to do with birthdays:
+            For the birthday girl to get her birthday gift, she must first solve this birthday riddle, which actually has nothing to do with birthdays:
         </p>
     </div>
 
@@ -555,7 +555,7 @@
         <button class="close-final" onclick="closeFinalMessage()">×</button>
         <div class="final-content">
             <h2>Go check your mailbox.</h2>
-            <p>(a lil smth for the cruise)</p>
+            <p>(a lil smth for the cruise ;))</p>
             <p><a href="https://www.canva.com/design/DAGrwcwGfUc/rQ3rrgwYVEFhn5RSMDgyDg/view?utm_content=DAGrwcwGfUc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hee6748bcc3" target="_blank" class="poem-link">Also I wrote u a poem back</a></p>
         </div>
     </div>
@@ -725,9 +725,22 @@
                 // Add to found groups display
                 const groupItem = document.createElement('div');
                 groupItem.className = 'group-item';
+                
+                // Create the descriptions for each group
+                let description = '';
+                if (matchedGroup.name === "Cats We Encountered") {
+                    description = "playground cat (mangoes), camas, the cat I had for a night (beds), our neighbors black cat (neighbor nigga), in the cat cafe that one fat one, idek if it was preggy lol (pregnant one)";
+                } else if (matchedGroup.name === "Places where you somehow were still the view") {
+                    description = "Biosphere 2 (sphere), Mount Lemmon (citrus heights), Botanical Gardens (petaled choir), Pumpkin Patch (spiced rows)";
+                } else if (matchedGroup.name === "The most mind blowing, delicious, good as fuck dishes you made me") {
+                    description = "Steak bites (charred silk), Wings (heat feathers), Tomato Soup (red hush), La7me bi 3jeen (molasses monster)";
+                } else if (matchedGroup.name === "Moments I wish I could snapshot how I felt during") {
+                    description = "I napped on u while u were playing crossword (crossword lullaby), you explained Kant's take on synthetic a priori inference while walking (a priori steps), you played me Gymnopédies while I pretended to do HW (nightly keys), Junnu Nutu dabke on the drive back from celebrating Syria's freedom (freed rhythm)";
+                }
+                
                 groupItem.innerHTML = `
                     <div class="group-name">${matchedGroup.name}</div>
-                    <div class="group-items">${matchedGroup.items.join(', ')}</div>
+                    <div class="group-items">${description}</div>
                 `;
                 document.getElementById('groupsFound').appendChild(groupItem);
                 
