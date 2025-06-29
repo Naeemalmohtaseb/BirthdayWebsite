@@ -1,1 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Dancing+Script:wght@700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff69b4;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .confetti:nth-child(odd) {
+            background: #ffb6c1;
+            width: 8px;
+            animation-duration: 2.5s;
+        }
+
+        .confetti:nth-child(3n) {
+            background: #ffd700;
+            animation-duration: 3.5s;
+        }
+
+        /* Landing Page */
+        .landing {
+            text-align: center;
+            padding: 80px 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .landing h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: #d63384;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .landing p {
+            font-size: 1.5rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .birthday-graphic {
+            margin: 40px auto;
+            max-width: 300px;
+            opacity: 0.8;
+        }
+
+        .birthday-graphic img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: #fff;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .letter-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .letter-content p {
+            margin-bottom: 15px;
+        }
+
+        .close-letter {
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .close-letter:hover {
+            background: #c42d74;
+            transform: translateY(-2px);
+        }
+
+        /* Open Letter Button */
+        .open-letter-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            border: 2px solid #d63384;
+            color: #d63384;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: none;
+        }
+
+        .open-letter-btn:hover {
+            background: #d63384;
+            color: white;
+        }
+
+        /* Riddle Section */
+        .riddle-section {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .riddle-text {
+            font-size: 1.8rem;
+            color: #444;
+            font-style: italic;
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .riddle-input {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #d63384;
+            border-radius: 25px;
+            width: 250px;
+            margin-right: 10px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .riddle-submit {
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .riddle-submit:hover {
+            background: #c42d74;
+            transform: translateY(-2px);
+        }
+
+        .riddle-hint {
+            color: #e74c3c;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .riddle-hint.show {
+            opacity: 1;
+        }
+
+        /* Game Section */
+        .game-section {
+            display: none;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .game-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #d63384;
+            margin-bottom: 30px;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tile {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 20px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            user-select: none;
+        }
+
+        .tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .tile.selected {
+            background: #ffb6c1;
+            border-color: #d63384;
+        }
+
+        .tile.found {
+            background: #e8e8e8;
+            color: #999;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .submit-group {
+            display: block;
+            margin: 0 auto;
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .submit-group:hover {
+            background: #c42d74;
+            transform: translateY(-2px);
+        }
+
+        .submit-group:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .groups-found {
+            margin-top: 30px;
+        }
+
+        .group-item {
+            background: #f8f8f8;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            text-align: center;
+            opacity: 0;
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .group-name {
+            font-weight: bold;
+            color: #d63384;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .group-items {
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Shake animation for wrong guesses */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Final Message */
+        .final-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1s ease;
+        }
+
+        .final-message.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .final-content {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+        }
+
+        .final-content h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #d63384;
+            margin-bottom: 20px;
+        }
+
+        .final-content p {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 30px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .poem-link {
+            color: #d63384;
+            text-decoration: none;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #d63384;
+            transition: all 0.3s ease;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .poem-link:hover {
+            color: #c42d74;
+            border-bottom-color: #c42d74;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tile {
+                font-size: 0.85rem;
+                padding: 15px 5px;
+            }
+            
+            .riddle-input {
+                width: 200px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Confetti will be added by JavaScript -->
+    
+    <!-- Landing Page -->
+    <div class="landing">
+        <h1>Happy Birthday [Her Name]!</h1>
+        <p>This little site was made for you.</p>
+        <div class="birthday-graphic">
+            <!-- Replace with actual image -->
+            <img src="birthday.png" alt="Birthday decoration" style="display: none;">
+            <!-- Placeholder SVG cake -->
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <rect x="50" y="100" width="100" height="80" fill="#f4a460" rx="5"/>
+                <rect x="40" y="90" width="120" height="20" fill="#ff69b4" rx="10"/>
+                <rect x="45" y="80" width="110" height="20" fill="#ffd700" rx="10"/>
+                <circle cx="70" cy="70" r="3" fill="#ff6347"/>
+                <circle cx="100" cy="65" r="3" fill="#ff6347"/>
+                <circle cx="130" cy="70" r="3" fill="#ff6347"/>
+                <rect x="69" y="50" width="2" height="20" fill="#333"/>
+                <rect x="99" y="45" width="2" height="20" fill="#333"/>
+                <rect x="129" y="50" width="2" height="20" fill="#333"/>
+                <ellipse cx="70" cy="48" rx="5" ry="8" fill="#ffa500"/>
+                <ellipse cx="100" cy="43" rx="5" ry="8" fill="#ffa500"/>
+                <ellipse cx="130" cy="48" rx="5" ry="8" fill="#ffa500"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Letter Modal -->
+    <div class="modal-overlay" id="letterModal">
+        <div class="modal">
+            <div class="letter-content">
+                <p>Happy birthday, habibti.</p>
+                <p>I made this little thing for you — there's a game, some memories, and a surprise at the end. I hope it makes you feel as loved as you are.</p>
+                <p>Now go solve the riddle...</p>
+            </div>
+            <button class="close-letter" onclick="closeLetter()">Close Letter</button>
+        </div>
+    </div>
+
+    <!-- Open Letter Button -->
+    <button class="open-letter-btn" onclick="openLetter()">📜 Open Letter</button>
+
+    <!-- Riddle Section -->
+    <div class="riddle-section" id="riddleSection">
+        <p class="riddle-text">"Zaina lives in a house, Spongebob lives in a pineapple, Naeem lives in a ..."</p>
+        <div>
+            <input type="text" class="riddle-input" id="riddleAnswer" placeholder="Enter your answer...">
+            <button class="riddle-submit" onclick="checkRiddle()">Submit</button>
+        </div>
+        <p class="riddle-hint" id="riddleHint">Try again, it really isn't that hard</p>
+    </div>
+
+    <!-- Game Section -->
+    <div class="game-section" id="gameSection">
+        <h2 class="game-title">Find the Connections</h2>
+        <div class="game-grid" id="gameGrid">
+            <!-- Tiles will be generated by JavaScript -->
+        </div>
+        <button class="submit-group" id="submitGroup" onclick="submitGroup()" disabled>Submit Group</button>
+        <div class="groups-found" id="groupsFound">
+            <!-- Found groups will appear here -->
+        </div>
+    </div>
+
+    <!-- Final Message -->
+    <div class="final-message" id="finalMessage">
+        <div class="final-content">
+            <h2>Go check your mailbox.</h2>
+            <p>(a lil smth for the cruise)</p>
+            <p><a href="https://docs.google.com/document/d/your-poem-link-here" target="_blank" class="poem-link">Also I wrote u a poem back</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Confetti generation
+        function createConfetti() {
+            const colors = ['#ff69b4', '#ffb6c1', '#ffd700', '#ff6347', '#ffa500'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -10 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+
+        // Initialize confetti
+        createConfetti();
+
+        // Modal functions
+        function openLetter() {
+            document.getElementById('letterModal').classList.add('active');
+        }
+
+        function closeLetter() {
+            document.getElementById('letterModal').classList.remove('active');
+            document.querySelector('.open-letter-btn').style.display = 'block';
+            
+            // Show riddle section if it's the first time
+            if (!document.getElementById('riddleSection').style.display || 
+                document.getElementById('riddleSection').style.display === 'none') {
+                setTimeout(() => {
+                    document.getElementById('riddleSection').style.display = 'block';
+                }, 500);
+            }
+        }
+
+        // Show letter modal after delay
+        setTimeout(() => {
+            openLetter();
+        }, 2000);
+
+        // Riddle checking
+        function checkRiddle() {
+            const answer = document.getElementById('riddleAnswer').value.toLowerCase().trim();
+            const correctAnswer = 'mango'; // Change this to your actual answer
+            
+            if (answer === correctAnswer) {
+                // Fade out riddle section
+                document.getElementById('riddleSection').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('riddleSection').style.display = 'none';
+                    document.getElementById('gameSection').style.display = 'block';
+                    initializeGame();
+                }, 500);
+            } else {
+                // Show hint and shake input
+                document.getElementById('riddleHint').classList.add('show');
+                document.getElementById('riddleAnswer').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('riddleAnswer').classList.remove('shake');
+                }, 500);
+            }
+        }
+
+        // Allow Enter key for riddle submission
+        document.getElementById('riddleAnswer')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkRiddle();
+            }
+        });
+
+        // Game data and logic
+        const gameData = {
+            groups: [
+                {
+                    name: "Cats We Encountered",
+                    items: ["mangoes", "beds", "neighbor nigga", "pregnant one"]
+                },
+                {
+                    name: "Places where you somehow were still the view",
+                    items: ["sphere", "citrus heights", "petaled choir", "spiced rows"]
+                },
+                {
+                    name: "The most mind blowing, delicious, good as fuck dishes you made me",
+                    items: ["charred silk", "heat feathers", "red hush", "molasses monster"]
+                },
+                {
+                    name: "Moments I wish I could snapshot how I felt during",
+                    items: ["crossword lullaby", "a priori steps", "nightly keys", "freed rhythm"]
+                }
+            ]
+        };
+
+        let selectedTiles = [];
+        let foundGroups = [];
+
+        // Shuffle array
+        function shuffle(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Initialize game
+        function initializeGame() {
+            const gameGrid = document.getElementById('gameGrid');
+            const allItems = gameData.groups.flatMap(group => group.items);
+            const shuffledItems = shuffle(allItems);
+            
+            gameGrid.innerHTML = '';
+            shuffledItems.forEach((item, index) => {
+                const tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.textContent = item;
+                tile.dataset.item = item;
+                tile.addEventListener('click', () => selectTile(tile));
+                gameGrid.appendChild(tile);
+            });
+        }
+
+        // Tile selection
+        function selectTile(tile) {
+            if (tile.classList.contains('found')) return;
+            
+            if (tile.classList.contains('selected')) {
+                tile.classList.remove('selected');
+                selectedTiles = selectedTiles.filter(t => t !== tile);
+            } else if (selectedTiles.length < 4) {
+                tile.classList.add('selected');
+                selectedTiles.push(tile);
+            }
+            
+            // Enable/disable submit button
+            document.getElementById('submitGroup').disabled = selectedTiles.length !== 4;
+        }
+
+        // Submit group
+        function submitGroup() {
+            if (selectedTiles.length !== 4) return;
+            
+            const selectedItems = selectedTiles.map(tile => tile.dataset.item);
+            
+            // Check if this matches any group
+            const matchedGroup = gameData.groups.find(group => {
+                return group.items.every(item => selectedItems.includes(item)) &&
+                       selectedItems.every(item => group.items.includes(item));
+            });
+            
+            if (matchedGroup && !foundGroups.includes(matchedGroup.name)) {
+                // Correct group!
+                foundGroups.push(matchedGroup.name);
+                
+                // Mark tiles as found
+                selectedTiles.forEach(tile => {
+                    tile.classList.remove('selected');
+                    tile.classList.add('found');
+                });
+                
+                // Add to found groups display
+                const groupItem = document.createElement('div');
+                groupItem.className = 'group-item';
+                groupItem.innerHTML = `
+                    <div class="group-name">${matchedGroup.name}</div>
+                    <div class="group-items">${matchedGroup.items.join(', ')}</div>
+                `;
+                document.getElementById('groupsFound').appendChild(groupItem);
+                
+                // Reset selection
+                selectedTiles = [];
+                document.getElementById('submitGroup').disabled = true;
+                
+                // Check if all groups found
+                if (foundGroups.length === gameData.groups.length) {
+                    setTimeout(() => {
+                        document.getElementById('finalMessage').classList.add('active');
+                    }, 1000);
+                }
+            } else {
+                // Wrong group - shake tiles
+                selectedTiles.forEach(tile => {
+                    tile.classList.add('shake');
+                    setTimeout(() => {
+                        tile.classList.remove('shake');
+                        tile.classList.remove('selected');
+                    }, 500);
+                });
+                selectedTiles = [];
+                document.getElementById('submitGroup').disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
