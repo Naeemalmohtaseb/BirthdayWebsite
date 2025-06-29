@@ -113,6 +113,8 @@
             padding: 40px;
             max-width: 600px;
             width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transform: scale(0.9);
@@ -417,6 +419,27 @@
             border-bottom-color: #c42d74;
         }
 
+        /* Reveal Gift Button */
+        .reveal-gift-btn {
+            display: block;
+            margin: 30px auto 0;
+            background: #ffd700;
+            color: #d63384;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Dancing Script', cursive;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .reveal-gift-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .game-grid {
@@ -440,8 +463,8 @@
     
     <!-- Landing Page -->
     <div class="landing">
-        <h1>Happy Birthday [Her Name]!</h1>
-        <p>This little site was made for you.</p>
+        <h1>Happy Birthday Zanzoon!</h1>
+        <p>An actual birthday website for you this time.</p>
         <div class="birthday-graphic">
             <!-- Replace with actual image -->
             <img src="birthday.png" alt="Birthday decoration" style="display: none;">
@@ -461,15 +484,36 @@
                 <ellipse cx="130" cy="48" rx="5" ry="8" fill="#ffa500"/>
             </svg>
         </div>
+        <p style="font-size: 1.3rem; color: #666; font-style: italic; margin-top: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            For the birthday girl to get her birthday gift, she must first solve this birthday riddle, which actually has nth to do with birthdays:
+        </p>
     </div>
 
     <!-- Letter Modal -->
     <div class="modal-overlay" id="letterModal">
         <div class="modal">
             <div class="letter-content">
-                <p>Happy birthday, habibti.</p>
-                <p>I made this little thing for you — there's a game, some memories, and a surprise at the end. I hope it makes you feel as loved as you are.</p>
-                <p>Now go solve the riddle...</p>
+                <p style="font-size: 1.8rem; margin-bottom: 20px;">Zaina,</p>
+                <p>There are still moments when I miss you without warning — the softness of your skin, your immaculate fart onomatopoeia, or the way you'd turn a story about a stranger into a scene straight out of a film.</p>
+                <p>I still chuckle thinking about you imitating that NPC scented leaf guy, or narrating a scandalous monologue about some fat-ass endocrinology patient.</p>
+                <p>What I'm saying is: I still notice the spaces where you used to be. And I've also come to notice what those spaces gave me.</p>
+                <p>The way you see the world — full of feeling, humor, and curiosity — cracked something open in me. I talk about politics now with a patriotic fire you probably lit. I notice the small things because I remember how you would. And sometimes I hear a joke, and I pause, just long enough to imagine how you'd say it — louder, sillier, better.</p>
+                <p>You've always had that gift: you make connection feel effortless. A story, a drink, a glance — you give it weight. You could hand someone a latte and somehow also hand them part of your heart. You make matcha taste like comfort, espresso feel like an event, and even a moldy container become a punchline.</p>
+                <p>But it's more than that.</p>
+                <p>You care. Not for show. Not for applause. You just do.</p>
+                <p>And I know that's not always easy. I know you've held some of the heaviest questions — about womanhood, about religion, about freedom and modesty and friendship and what it means to feel alone in a loud world.</p>
+                <p>And yet, somehow, you keep moving with grace.</p>
+                <p>You carry contradictions in one hand, and kindness in the other. You say it's to protect — but I think it's to understand. To connect.</p>
+                <p>And that's what makes you a gift.</p>
+                <p>I've sat in rooms where people boast about their lives and insights, their big plans and accomplishments — and all I can think is: <em>"If only you knew her."</em></p>
+                <p>Because if they did, they'd understand what it means to be thoughtful without being self-important. To be brave without being loud. To be humble without dimming your own light.</p>
+                <p>So while you're stepping into another year, I hope you remember that. That you are a gift — not just to others, but to yourself, too.</p>
+                <p>I hope you write poems, even the ones you never show anyone.</p>
+                <p>I hope you keep making drinks just to experiment. I hope you dance. I hope your fingers find their way back to the piano. And I hope joy finds you — even in the quietest corners.</p>
+                <p>You give so much. Let yourself receive some of that back.</p>
+                <p>Live like someone who knows they are deeply loved by the world. Because you are.</p>
+                <p style="margin-top: 25px;">With the best of wishes, care, and the kind of faith I only ever learned from you,</p>
+                <p>Naeem</p>
             </div>
             <button class="close-letter" onclick="closeLetter()">Close Letter</button>
         </div>
@@ -490,6 +534,11 @@
 
     <!-- Game Section -->
     <div class="game-section" id="gameSection">
+        <div style="text-align: center; margin-bottom: 40px; padding: 0 20px;">
+            <p style="font-size: 1.3rem; color: #666; font-style: italic; max-width: 700px; margin: 0 auto; line-height: 1.8;">
+                Continuing with the theme of puzzles, as there is no better gift for you than gratification through literary challenge. We have Connections! Four categories related to us, and once you solve it, then not only do you get your validation, but also a little special gift..
+            </p>
+        </div>
         <h2 class="game-title">Find the Connections</h2>
         <div class="game-grid" id="gameGrid">
             <!-- Tiles will be generated by JavaScript -->
@@ -498,14 +547,16 @@
         <div class="groups-found" id="groupsFound">
             <!-- Found groups will appear here -->
         </div>
+        <button class="reveal-gift-btn" id="revealGiftBtn" style="display: none;" onclick="showFinalMessage()">Click here to reveal your gift! 🎁</button>
     </div>
 
     <!-- Final Message -->
     <div class="final-message" id="finalMessage">
+        <button class="close-final" onclick="closeFinalMessage()">×</button>
         <div class="final-content">
             <h2>Go check your mailbox.</h2>
             <p>(a lil smth for the cruise)</p>
-            <p><a href="https://docs.google.com/document/d/your-poem-link-here" target="_blank" class="poem-link">Also I wrote u a poem back</a></p>
+            <p><a href="https://www.canva.com/design/DAGrwcwGfUc/Bh-dqqy9fep_zhPQPW-I2A/edit?utm_content=DAGrwcwGfUc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" class="poem-link">Also I wrote u a poem back</a></p>
         </div>
     </div>
 
@@ -687,7 +738,7 @@
                 // Check if all groups found
                 if (foundGroups.length === gameData.groups.length) {
                     setTimeout(() => {
-                        document.getElementById('finalMessage').classList.add('active');
+                        document.getElementById('revealGiftBtn').style.display = 'block';
                     }, 1000);
                 }
             } else {
@@ -702,6 +753,16 @@
                 selectedTiles = [];
                 document.getElementById('submitGroup').disabled = true;
             }
+        }
+
+        // Show final message when button is clicked
+        function showFinalMessage() {
+            document.getElementById('finalMessage').classList.add('active');
+        }
+
+        // Close final message
+        function closeFinalMessage() {
+            document.getElementById('finalMessage').classList.remove('active');
         }
     </script>
 </body>
